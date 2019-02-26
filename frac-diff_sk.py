@@ -1,3 +1,11 @@
+"""
+Python code for fractional differencing of pandas time series
+illustrating the concepts of the article "Preserving Memory in Stationary Time Series" 
+by Simon Kuttruf
+
+While this code is dedicated to the public domain for use without permission, the author disclaims any liability in connection with the use of this code.
+"""
+
 import numpy as np 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,7 +24,6 @@ def plotWeights(dRange, lags, numberPlots):
     interval=np.linspace(dRange[0],dRange[1],numberPlots)
     for i, diff_order in enumerate(interval):
         weights[i]=getWeights(diff_order,lags)
-
     weights.columns = [round(x,2) for x in interval]
     fig=weights.plot()
     plt.legend(title='Order of differencing')
@@ -41,8 +48,7 @@ def ts_differencing(series, order, lag_cutoff):
 def plotMemoryVsCorr(result, seriesName):
     fig, ax = plt.subplots()
     ax2 = ax.twinx()  
-    color1='xkcd:deep red'; color2='xkcd:cornflower blue';
-
+    color1='xkcd:deep red'; color2='xkcd:cornflower blue'
     ax.plot(result.order,result['adf'],color=color1)
     ax.plot(result.order, result['5%'], color='xkcd:slate')
     ax2.plot(result.order,result['corr'], color=color2)
@@ -62,7 +68,6 @@ def MemoryVsCorr(series, dRange, numberPlots, lag_cutoff, seriesName):
     result=pd.DataFrame(np.zeros((len(interval),4)))
     result.columns = ['order','adf','corr', '5%']
     result['order']=interval
-
     for counter,order in enumerate(interval):
         seq_traf=seq_transform(series,order,lag_cutoff)
         res=adfuller(seq_traf, maxlag=1, regression='c') #autolag='AIC'
