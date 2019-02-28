@@ -69,7 +69,7 @@ def MemoryVsCorr(series, dRange, numberPlots, lag_cutoff, seriesName):
     result.columns = ['order','adf','corr', '5%']
     result['order']=interval
     for counter,order in enumerate(interval):
-        seq_traf=seq_transform(series,order,lag_cutoff)
+        seq_traf=ts_differencing(series,order,lag_cutoff)
         res=adfuller(seq_traf, maxlag=1, regression='c') #autolag='AIC'
         result.loc[counter,'adf']=res[0]
         result.loc[counter,'5%']=res[4]['5%']
